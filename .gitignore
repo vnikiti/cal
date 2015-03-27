@@ -4,3 +4,4 @@
 .project
 .classpath
 .vagrant
+*.p12
