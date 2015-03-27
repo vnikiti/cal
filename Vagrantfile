@@ -69,9 +69,9 @@ Vagrant.configure(2) do |config|
    
   config.vm.provision "shell", run: "always", inline: <<-SHELL
     sudo alternatives --set java /opt/jdk1.8.0_25/bin/java
+    sudo /home/vagrant/apache-tomcat-8.0.15/bin/startup.sh -u vagrant
     cd /vagrant
     mvn clean package
     sudo ln -sf /vagrant/target/cal-1.0.war /home/vagrant/apache-tomcat-8.0.15/webapps
-    sudo /home/vagrant/apache-tomcat-8.0.15/bin/startup.sh -u vagrant
   SHELL
 end
