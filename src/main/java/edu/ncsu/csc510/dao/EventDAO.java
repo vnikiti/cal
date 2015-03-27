@@ -2,7 +2,6 @@ package edu.ncsu.csc510.dao;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -48,7 +47,7 @@ public class EventDAO {
 
 		ClassLoader loader = Thread.currentThread().getContextClassLoader();
 		URL url = loader.getResource(P12_KEY_FILE);
-		File p12File = new File(url.toURI());
+		File p12File = new File(url.getPath());
 
 		HttpTransport httpTransport = GoogleNetHttpTransport.newTrustedTransport();
 		GoogleCredential credential = new GoogleCredential.Builder().setTransport(httpTransport)
