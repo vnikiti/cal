@@ -1,6 +1,7 @@
 <%@tag description="Layout" pageEncoding="UTF-8"%>
 <%@attribute name="header" fragment="true" %>
 <%@attribute name="footer" fragment="true" %>
+
 <html>
   <head>
     <meta charset="utf-8">
@@ -41,14 +42,18 @@
           </form>
 
           <ul class="nav navbar-nav navbar-right">
-              <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">mdnevill <span class="caret"></span></a>
-                  <ul class="dropdown-menu" role="menu">
-                      <li><a href="#">Settings</a></li>
-                      <li class="divider"></li>
-                      <li><a href="#">Log out</a></li>
-                  </ul>
-              </li>
+            <% if(request.getUserPrincipal() == null) { %>
+                <li><a href="#">Log in</a></li>
+            <% } else { %>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"><%= request.getUserPrincipal().getName() %><span class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="#">Settings</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#">Log out</a></li>
+                    </ul>
+                </li>
+            <% } %>
 
           </ul>
         </div><!-- /.navbar-collapse -->

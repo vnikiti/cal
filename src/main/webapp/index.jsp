@@ -2,12 +2,21 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 
 <t:layout>
-    <div class="row">
-        <div class="col-xs-6 center">
-            <h1>Welcome!</h1>
-            <p>
-                This is a placeholder for better stuff.
-            </p>
-        </div>
+    <div id="events-container" class="row">
+
     </div>
 </t:layout>
+
+<script type="text/javascript" src="scripts/Events.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        var config = {
+            container : $("#events-container"),
+            eventUrl : "/event"
+        };
+
+        events.init(config);
+        events.displayDemo();
+
+    });
+</script>
