@@ -2,7 +2,7 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 
 <t:layout>
-    <div clas="row">
+    <div class="row">
         <div class="col-xs-6 center">
             <h1>Welcome!</h1>
             <p>
