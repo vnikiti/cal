@@ -24,6 +24,7 @@ import com.google.api.services.calendar.model.CalendarList;
 import com.google.api.services.calendar.model.CalendarListEntry;
 import com.google.api.services.calendar.model.Event;
 import com.google.api.services.calendar.model.Events;
+import edu.ncsu.csc510.model.UserCalendar;
 
 /**
  * @author gargi pingale
@@ -58,7 +59,7 @@ public class EventDAO {
 		return credential;
 	}
 
-	public static Map<String, List<Event>> search(String query) {
+	public static Map<String, List<Event>> search(String user, String query) {
 		try {
 			// stores the result
 			Map<String, List<Event>> map = new HashMap<String, List<Event>>();
@@ -74,16 +75,27 @@ public class EventDAO {
 			        .build();
 
 			List<String> calList = new ArrayList<String>();
-			calList.add("ncsu.edu_hpasl5cmtenq7biv0omve1nvq8@group.calendar.google.com"); // CSC
-			                                                                              // Calendar
-			calList.add("ncsu.edu_iv41gou4edva6l3sejfg9mjo2k@group.calendar.google.com"); // CCEE
-			                                                                              // Student
-			                                                                              // Organization
-			calList.add("ncsu.edu_vd4gv8ter4klr9sa6efm5vmsq0@group.calendar.google.com"); // Physics
-			                                                                              // Department
-			calList.add("ncsu.edu_507c8794r25bnebhjrrh3i5c4s@group.calendar.google.com"); // Academic
-			                                                                              // Calendar
 
+			System.out.println("GOT USER "+user);
+			if (user == null) {
+				calList.add("ncsu.edu_hpasl5cmtenq7biv0omve1nvq8@group.calendar.google.com"); // CSC				// Calendar
+				calList.add("ncsu.edu_iv41gou4edva6l3sejfg9mjo2k@group.calendar.google.com"); // CCEE
+				// Student
+				// Organization
+				calList.add("ncsu.edu_vd4gv8ter4klr9sa6efm5vmsq0@group.calendar.google.com"); // Physics
+				// Department
+				calList.add("ncsu.edu_507c8794r25bnebhjrrh3i5c4s@group.calendar.google.com"); // Academic
+				// Calendar
+			}
+			else
+			{
+				//Look up user calendars from database
+				List<UserCalendar> results = UserCalendarDAO.getUserCalendars(user);
+				for (UserCalendar uc : results)
+				{
+					calList.add(uc.getCalendarId());
+				}
+			}
 			String sdt = "11/12/2012"; // dd/MM/yyyy
 			String edt = null;
 

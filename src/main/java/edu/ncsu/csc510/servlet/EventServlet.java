@@ -37,8 +37,9 @@ public class EventServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		String query = request.getParameter("q");
+		String user = request.getParameter("u");
 
-		Map<String, List<Event>> results = EventDAO.search(query);
+		Map<String, List<Event>> results = EventDAO.search(user,query);
 		String json = new Gson().toJson(results);
 
 		response.setContentType("application/json");

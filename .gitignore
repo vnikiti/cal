@@ -5,3 +5,5 @@
 .classpath
 .vagrant
 *.p12
+*.iml
+.idea/*
