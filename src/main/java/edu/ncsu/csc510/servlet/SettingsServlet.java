@@ -64,40 +64,18 @@ public class SettingsServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException,
             IOException {
 
-        StringBuilder buffer = new StringBuilder();
-        BufferedReader reader = request.getReader();
-        String line;
-        while ((line = reader.readLine()) != null) {
-            buffer.append(line);
-        }
-        String data = buffer.toString();
-        System.out.println(data);
-
-        System.out.println("IN POST: "+data);
         Gson gson = new Gson();
         Type type = new TypeToken<List<UserCalendar>>(){}.getType();
         List<UserCalendar> userCalendarList = null;
         try {
-             userCalendarList = gson.fromJson(data, type);
+             userCalendarList = gson.fromJson(request.getReader(), type);
         }
         catch(Exception e)
         {
-            System.out.println(e.toString());
             e.printStackTrace();
         }
-        if (userCalendarList == null)
-        {
-            System.out.println("GOT NULL");
-        }
-        else
-        {
-            System.out.println("NOT NULL");
-        }
-        for( UserCalendar c : userCalendarList)
-        {
-            System.out.println("GOT BACK "+c.getCalendarId());
-        }
 
+        UserCalendarDAO.addUserCalendars(userCalendarList);
     }
 
 }
