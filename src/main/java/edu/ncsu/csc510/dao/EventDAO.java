@@ -50,10 +50,10 @@ public class EventDAO {
 		URL url = loader.getResource(P12_KEY_FILE);
 		
 		// comment out below line for local environment
-		File p12File = new File("/var/lib/openshift/54fd0df0e0b8cd40250001b8/app-root/repo/src/main/resources/MyWolfPackNavigator-4dc9f8e58780.p12");
+		//File p12File = new File("/var/lib/openshift/54fd0df0e0b8cd40250001b8/app-root/repo/src/main/resources/MyWolfPackNavigator-4dc9f8e58780.p12");
 		
 		// uncomment below line for local environment
-		//File p12File = new File(url.getPath());
+		File p12File = new File(url.getPath());
 
 		HttpTransport httpTransport = GoogleNetHttpTransport.newTrustedTransport();
 		GoogleCredential credential = new GoogleCredential.Builder().setTransport(httpTransport)

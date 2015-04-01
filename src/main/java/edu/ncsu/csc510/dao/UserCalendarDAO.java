@@ -14,7 +14,10 @@ import java.util.List;
  * Created by Jessica on 3/31/2015.
  */
 public class UserCalendarDAO {
-    private static final String jdbcURL = "jdbc:mysql://127.0.0.1:3306/cal";
+
+    //local environment
+    //private static final String jdbcURL = "jdbc:mysql://127.0.0.1:3306/cal";
+    private static final String jdbcURL = "jdbc:mysql://127.12.104.130:3306/cal";
 
     private static final String user = "adminCU6MEuD";
     private static final String password = "xhcLl9QNsZwA";

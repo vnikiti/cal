@@ -1,5 +1,6 @@
 package edu.ncsu.csc510.servlet;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -55,7 +56,18 @@ public class SettingsServlet extends HttpServlet {
      */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException,
             IOException {
-        // TODO Auto-generated method stub
-    }
+
+
+        StringBuilder buffer = new StringBuilder();
+        BufferedReader reader = request.getReader();
+        String line;
+        while ((line = reader.readLine()) != null) {
+            buffer.append(line);
+        }
+        String data = buffer.toString();
+        System.out.println(data);
+
+        
+       }
 
 }
