@@ -67,7 +67,7 @@ public class SettingsServlet extends HttpServlet {
         String data = buffer.toString();
         System.out.println(data);
 
-        
+
        }
 
 }
