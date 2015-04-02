@@ -1,8 +1,6 @@
 package edu.ncsu.csc510.dao;
 
-import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -24,16 +22,16 @@ import com.google.api.services.calendar.model.CalendarList;
 import com.google.api.services.calendar.model.CalendarListEntry;
 import com.google.api.services.calendar.model.Event;
 import com.google.api.services.calendar.model.Events;
+
 import edu.ncsu.csc510.model.UserCalendar;
+
 
 /**
  * @author gargi pingale
  */
 public class EventDAO {
 
-	private static final String APPLICATION_NAME = "MyWolfPackNavigator";
-	private static final String SERVICE_ACCOUNT_EMAIL = "794973057266-v3f47pm6b2jjv5de2publs4ldfnhnu11@developer.gserviceaccount.com";
-	private static final String P12_KEY_FILE = "MyWolfPackNavigator-4dc9f8e58780.p12";
+	private static final String CREDENTIAL_FILE = "certificates/MyWolfPackNavigator-d54d44e58145.json";
 
 	/** Global instance of the HTTP transport. */
 	private static HttpTransport httpTransport;
@@ -47,21 +45,10 @@ public class EventDAO {
 	private static Credential authorize() throws Exception {
 
 		ClassLoader loader = Thread.currentThread().getContextClassLoader();
-		URL url = loader.getResource(P12_KEY_FILE);
-		
-		// comment out below line for local environment
-		File p12File = new File("/var/lib/openshift/54fd0df0e0b8cd40250001b8/app-root/repo/src/main/resources/MyWolfPackNavigator-4dc9f8e58780.p12");
-		
-		// uncomment below line for local environment
-		//File p12File = new File(url.getPath());
 
-		HttpTransport httpTransport = GoogleNetHttpTransport.newTrustedTransport();
-		GoogleCredential credential = new GoogleCredential.Builder().setTransport(httpTransport)
-		        .setJsonFactory(JSON_FACTORY).setServiceAccountId(SERVICE_ACCOUNT_EMAIL)
-		        .setServiceAccountPrivateKeyFromP12File(p12File)
-		        .setServiceAccountScopes(Collections.singleton(CalendarScopes.CALENDAR)).build();
+		GoogleCredential credential = GoogleCredential.fromStream(loader.getResourceAsStream(CREDENTIAL_FILE));
 
-		return credential;
+		return credential.createScoped(Collections.singleton(CalendarScopes.CALENDAR));
 	}
 
 	public static Map<String, List<Event>> search(String user, String query) {
@@ -76,21 +63,16 @@ public class EventDAO {
 			Credential credential = authorize();
 
 			// set up global Calendar instance
-			client = new Calendar.Builder(httpTransport, JSON_FACTORY, credential).setApplicationName(APPLICATION_NAME)
-			        .build();
+			client = new Calendar.Builder(httpTransport, JSON_FACTORY, credential).build();
 
 			List<String> calList = new ArrayList<String>();
 
 			System.out.println("GOT USER "+user);
 			if (user == null) {
-				calList.add("ncsu.edu_hpasl5cmtenq7biv0omve1nvq8@group.calendar.google.com"); // CSC				// Calendar
-				calList.add("ncsu.edu_iv41gou4edva6l3sejfg9mjo2k@group.calendar.google.com"); // CCEE
-				// Student
-				// Organization
-				calList.add("ncsu.edu_vd4gv8ter4klr9sa6efm5vmsq0@group.calendar.google.com"); // Physics
-				// Department
-				calList.add("ncsu.edu_507c8794r25bnebhjrrh3i5c4s@group.calendar.google.com"); // Academic
-				// Calendar
+				calList.add("ncsu.edu_hpasl5cmtenq7biv0omve1nvq8@group.calendar.google.com"); // CSC Calendar
+				calList.add("ncsu.edu_iv41gou4edva6l3sejfg9mjo2k@group.calendar.google.com"); // CCEE Student Organization
+				calList.add("ncsu.edu_vd4gv8ter4klr9sa6efm5vmsq0@group.calendar.google.com"); // Physics Department
+				calList.add("ncsu.edu_507c8794r25bnebhjrrh3i5c4s@group.calendar.google.com"); // Academic Calendar
 			}
 			else
 			{
