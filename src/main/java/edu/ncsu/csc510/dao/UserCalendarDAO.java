@@ -16,10 +16,10 @@ import java.util.List;
 public class UserCalendarDAO {
 
     // comment out below line for local environment
-    private static final String jdbcURL = "jdbc:mysql://127.12.104.130:3306/cal";
+    //private static final String jdbcURL = "jdbc:mysql://127.12.104.130:3306/cal";
 
     // uncomment below line for local environment
-    //private static final String jdbcURL = "jdbc:mysql://127.0.0.1:3306/cal";
+    private static final String jdbcURL = "jdbc:mysql://127.0.0.1:3306/cal";
 
 
 

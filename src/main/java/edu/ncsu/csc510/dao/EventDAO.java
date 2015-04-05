@@ -51,22 +51,23 @@ public class EventDAO {
 		return credential.createScoped(Collections.singleton(CalendarScopes.CALENDAR));
 	}
 
+	/**
+	 * To search all events matching with query string
+	 * @param user
+	 * @param query
+	 * @return
+	 */
 	public static Map<String, List<Event>> search(String user, String query) {
 		try {
 			// stores the result
 			Map<String, List<Event>> map = new HashMap<String, List<Event>>();
-
 			// initialize the transport
 			httpTransport = GoogleNetHttpTransport.newTrustedTransport();
-
 			// authorization
 			Credential credential = authorize();
-
 			// set up global Calendar instance
 			client = new Calendar.Builder(httpTransport, JSON_FACTORY, credential).build();
-
 			List<String> calList = new ArrayList<String>();
-
 			System.out.println("GOT USER "+user);
 			if (user == null) {
 				calList.add("ncsu.edu_hpasl5cmtenq7biv0omve1nvq8@group.calendar.google.com"); // CSC Calendar
@@ -85,9 +86,7 @@ public class EventDAO {
 			}
 			String sdt = "11/12/2012"; // dd/MM/yyyy
 			String edt = null;
-
 			map = searchCalendars(calList, query, sdt, edt);
-
 			return (map);
 		} catch (IOException e) {
 			System.err.println(e.getMessage());
@@ -96,28 +95,41 @@ public class EventDAO {
 		}
 		return null;
 	}
-
-	private static CalendarList getClientCalendars() throws IOException {
-		// View.header("Search Calendars");
-		CalendarList feed = client.calendarList().list().execute();
-		if (feed.getItems() != null) {
-			for (CalendarListEntry entry : feed.getItems()) {
-				System.out.println("ID: " + entry.getId());
+	
+	/**
+	 * Used to get event details for a particular event of a particular calendar
+	 * @param calId Calendar ID
+	 * @param eId Event ID
+	 * @return
+	 */
+	public static Event getEventDetail(String calId, String eId) {
+		try {
+			if (calId == null && eId == null) {
+				System.out.println("calendar id and event id cannot be null");
+				return null;
 			}
+			// initialize the transport
+			httpTransport = GoogleNetHttpTransport.newTrustedTransport();
+			// authorization
+			Credential credential = authorize();
+			// set up global Calendar instance
+			client = new Calendar.Builder(httpTransport, JSON_FACTORY, credential).build();
+			Event event = client.events().get(calId, eId).execute();
+			return (event);
+		} catch (IOException e) {
+			System.err.println(e.getMessage());
+		} catch (Throwable t) {
+			t.printStackTrace();
 		}
-		return feed;
+		return null;
 	}
 
 	/**
-	 * 
-	 * @param calList
-	 *            : List of Calendar Ids as String
-	 * @param qStr
-	 *            : free text query string
-	 * @param sdt
-	 *            : start date time input field : string in format : dd/MM/yyyy
-	 * @param edt
-	 *            : end date time input field : string in format : dd/MM/yyyy
+	 * Private function doing event search
+	 * @param calList: List of Calendar Ids as String
+	 * @param qStr: free text query string
+	 * @param sdt: start date time input field : string in format : dd/MM/yyyy
+	 * @param edt: end date time input field : string in format : dd/MM/yyyy
 	 * @return
 	 * @throws IOException
 	 * @throws ParseException
@@ -158,15 +170,17 @@ public class EventDAO {
 		}
 		return map;
 	}
-
-	private static void searchCalendars() throws IOException {
+	
+	
+	
+	private static CalendarList getClientCalendars() throws IOException {
+		// View.header("Search Calendars");
 		CalendarList feed = client.calendarList().list().execute();
 		if (feed.getItems() != null) {
 			for (CalendarListEntry entry : feed.getItems()) {
 				System.out.println("ID: " + entry.getId());
-				Events events = client.events().list(entry.getId()).setQ("alex").setTimeMax(null).setTimeMin(null)
-				        .execute();
 			}
 		}
+		return feed;
 	}
 }
