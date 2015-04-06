@@ -1,6 +1,8 @@
 package edu.ncsu.csc510.servlet;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -40,7 +42,14 @@ public class EventServlet extends HttpServlet {
 		String user = request.getParameter("u");
 
 		Map<String, List<Event>> results = EventDAO.search(user,query);
-		String json = new Gson().toJson(results);
+        Iterator it = results.entrySet().iterator();
+        ArrayList<Event> allEvents = new ArrayList<Event>();
+        while(it.hasNext()){
+            Map.Entry kvp = (Map.Entry) it.next();
+            List<Event> events = (List<Event>)kvp.getValue();
+            allEvents.addAll(events);
+        }
+		String json = new Gson().toJson(allEvents);
 
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
