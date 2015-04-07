@@ -12,11 +12,10 @@
     $(document).ready(function(){
         var config = {
             container : $("#events-container"),
-            eventUrl : "/event"
+            eventUrl : "event"
         };
 
         events.init(config);
-        events.displayDemo();
 
     });
 </script>

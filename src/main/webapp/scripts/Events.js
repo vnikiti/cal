@@ -4,7 +4,8 @@
 
     events.config = {
         container : $('#container'),
-        eventUrl : '/'
+        eventUrl : '',
+        searchForm: $("#searchForm")
     };
 
     events.init = function(config){
@@ -12,20 +13,35 @@
         if(config && typeof(config) == "object"){
             $.extend(events.config, config);
         }
-
+        initClickHandlers();
         events.initialized = true;
     };
 
+    var initClickHandlers = function(){
+        events.config.searchForm.submit(function(e){
+            e.preventDefault();
+            var input = $(this).find("input").first();
+            var query = input.val();
+            console.log("Submitting query: " + query);
+            events.getEvents(query);
+        });
+    }
+
     events.getEvents = function(query){
+
         var request = $.ajax({
             method: 'GET',
-            url: events.config.eventsUrl,
+            url: events.config.eventUrl,
+            dataType: "json",
             data: {q: query}
         });
         // Process the request
         request.done(function(msg){
-            if(msg != null){
+            if(msg == null || msg.length == 0){
+                events.config.container.text("No results found")
+            } else{
                 console.log(msg);
+                displayEvents(msg);
             }
         });
 
@@ -35,10 +51,9 @@
     };
 
     var displayEvents = function(eventsList){
+        events.config.container.text("");
         for(var i = 0; i < eventsList.length; i++){
-
             var html = buildEventContent(eventsList[i]);
-            console.log(html);
             events.config.container.append(html);
         }
     };
@@ -46,11 +61,11 @@
     var buildEventContent = function(event){
         var html = '<div class="col-xs-12 col-sm-6 col-md-4">' +
             '<div class="media-left">' +
-                '<a href="#"><img src="' + event.imgUrl + '" style="width: 64px; height: 64px" /></a>' +
+                '<a href="#"><img src="' + '" style="width: 64px; height: 64px" /></a>' +
             '</div>' +
             '<div class="media-body">' +
-                '<h2 class="media-heading">' + event.title + '</h2>' +
-                '<h4>' + event.dateTime + '</h4>' +
+                '<h2 class="media-heading">' + event.summary + '</h2>' +
+                '<h4>' + event.start.dateTime + '</h4>' +
                 '<h5>' + event.location + '</h5>' +
                 '<p>' + event.description + '</p>' +
                 '<p><a href="#" class="btn btn-default" role="button">Details</a></p>' +
