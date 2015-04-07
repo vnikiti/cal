@@ -28,13 +28,13 @@
         });
     }
 
-    events.getEvents = function(query){
+    events.getEvents = function(query, user){
 
         var request = $.ajax({
             method: 'GET',
             url: events.config.eventUrl,
             dataType: "json",
-            data: {q: query}
+            data: {q: query, u: user}
         });
         // Process the request
         request.done(function(msg){

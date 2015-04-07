@@ -16,6 +16,8 @@
         };
 
         events.init(config);
+        // Temporary demonstration of getting all relevant events for a user
+        events.getEvents("", "testUser");
 
     });
 </script>

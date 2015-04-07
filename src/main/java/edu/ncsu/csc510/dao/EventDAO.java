@@ -74,7 +74,9 @@ public class EventDAO {
 				calList.add("ncsu.edu_iv41gou4edva6l3sejfg9mjo2k@group.calendar.google.com"); // CCEE Student Organization
 				calList.add("ncsu.edu_vd4gv8ter4klr9sa6efm5vmsq0@group.calendar.google.com"); // Physics Department
 				calList.add("ncsu.edu_507c8794r25bnebhjrrh3i5c4s@group.calendar.google.com"); // Academic Calendar
-			}
+			} else if(user.equals("testUser")){
+                calList.add("ncsu.edu_hpasl5cmtenq7biv0omve1nvq8@group.calendar.google.com");
+            }
 			else
 			{
 				//Look up user calendars from database
