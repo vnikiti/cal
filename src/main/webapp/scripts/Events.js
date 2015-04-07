@@ -5,6 +5,7 @@
     events.config = {
         container : $('#container'),
         eventUrl : '',
+        eventDetailUrl: 'eventDetail',
         searchForm: $("#searchForm")
     };
 
@@ -59,7 +60,9 @@
     };
 
     var buildEventContent = function(event){
-        var html = '<div class="col-xs-12 col-sm-6 col-md-4">' +
+        var params = {cid: event.organizer.email, eid: event.id};
+        var detailUrl = events.config.eventDetailUrl + "?" + $.param(params);
+        var html = '<div class="col-xs-12 col-sm-6 col-md-4 text-truncate">' +
             '<div class="media-left">' +
                 '<a href="#"><img src="' + '" style="width: 64px; height: 64px" /></a>' +
             '</div>' +
@@ -68,7 +71,7 @@
                 '<h4>' + event.start.dateTime + '</h4>' +
                 '<h5>' + event.location + '</h5>' +
                 '<p>' + event.description + '</p>' +
-                '<p><a href="#" class="btn btn-default" role="button">Details</a></p>' +
+                '<p><a href="'+ detailUrl + '" class="btn btn-default" role="button">Details</a></p>' +
             '</div>' +
             '</div>';
 
