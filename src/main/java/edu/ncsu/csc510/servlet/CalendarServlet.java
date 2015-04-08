@@ -13,14 +13,20 @@ import com.google.api.client.auth.oauth2.AuthorizationCodeFlow;
 import com.google.api.client.extensions.jdo.JdoDataStoreFactory;
 import com.google.api.client.extensions.servlet.auth.oauth2.AbstractAuthorizationCodeServlet;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
+import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow.Builder;
+import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
+import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.http.GenericUrl;
+import com.google.api.client.http.HttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.calendar.CalendarScopes;
 import com.google.gson.Gson;
 
 import edu.ncsu.csc510.dao.PMF;
 
+import java.security.GeneralSecurityException;
 import java.util.Collections;
 import java.util.List;
 import java.util.ArrayList;
@@ -31,6 +37,15 @@ import java.util.ArrayList;
 @WebServlet(asyncSupported = true, urlPatterns = { "/calendar" })
 public class CalendarServlet extends AbstractAuthorizationCodeServlet {
 	private static final long serialVersionUID = 1L;
+	
+	private static final String CLIENT_ID = "794973057266-titj4dapr8hoq2lchtc17b67tbcqhgjr.apps.googleusercontent.com";
+	private static final String CLIENT_SECRET = "F-5GlFlph4XprFbhdeI1NHb2";
+	
+	/** Global instance of the HTTP transport. */
+	private static HttpTransport httpTransport;
+
+	/** Global instance of the JSON factory. */
+	private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
 	
 	private static final PersistenceManager pm = PMF.get().getPersistenceManager();
 	private static final JdoDataStoreFactory dataStoreFactory = new JdoDataStoreFactory(pm.getPersistenceManagerFactory());
@@ -70,10 +85,22 @@ public class CalendarServlet extends AbstractAuthorizationCodeServlet {
 
 	@Override
 	protected AuthorizationCodeFlow initializeFlow() throws IOException {
-		return new GoogleAuthorizationCodeFlow.Builder(new NetHttpTransport(), JacksonFactory.getDefaultInstance(),
-		        "[[ENTER YOUR CLIENT ID]]", "[[ENTER YOUR CLIENT SECRET]]",
-		        Collections.singleton(CalendarScopes.CALENDAR)).setDataStoreFactory(dataStoreFactory)
-		        .setAccessType("offline").build();
+		
+		try {
+	        httpTransport = GoogleNetHttpTransport.newTrustedTransport();
+        } catch (GeneralSecurityException e) {
+	        e.printStackTrace();
+        }
+		
+		Builder builder = new GoogleAuthorizationCodeFlow.Builder(httpTransport, 
+				JSON_FACTORY, CLIENT_ID, CLIENT_SECRET,
+		        Collections.singleton(CalendarScopes.CALENDAR));
+		
+		builder.setDataStoreFactory(dataStoreFactory);
+		builder.setAccessType("offline");
+		AuthorizationCodeFlow authFlow = builder.build();
+				
+		return authFlow;
 	}
 
 	@Override
