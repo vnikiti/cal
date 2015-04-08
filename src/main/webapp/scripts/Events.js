@@ -62,13 +62,15 @@
     var buildEventContent = function(event){
         var params = {cid: event.organizer.email, eid: event.id};
         var detailUrl = events.config.eventDetailUrl + "?" + $.param(params);
+        var start = new Date(event.start.dateTime.value);
+        var dateOptions = {weekday: "long", year: "numeric", month: "long", day: "numeric", hour: "2-digit", minute: "2-digit"};
         var html = '<div class="col-xs-12 col-sm-6 col-md-4 text-truncate">' +
             '<div class="media-left">' +
                 '<a href="#"><img src="' + '" style="width: 64px; height: 64px" /></a>' +
             '</div>' +
             '<div class="media-body">' +
                 '<h2 class="media-heading">' + event.summary + '</h2>' +
-                '<h4>' + event.start.dateTime + '</h4>' +
+                '<h4>' + start.toLocaleString("en-US", dateOptions) + '</h4>' +
                 '<h5>' + event.location + '</h5>' +
                 '<p>' + event.description + '</p>' +
                 '<p><a href="'+ detailUrl + '" class="btn btn-default" role="button">Details</a></p>' +
