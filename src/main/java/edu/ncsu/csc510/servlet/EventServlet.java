@@ -44,7 +44,7 @@ public class EventServlet extends HttpServlet {
         String json = "";
         // Calendar is specified, so we'll search it for the query (we won't use user)
         if(cal != null && !cal.equals("")){
-            Map<String, List<Event>> results = EventDAO.searchCalendar(cal,query);
+            Map<String, List<Event>> results = EventDAO.searchCalendar(cal, query);
             Iterator it = results.entrySet().iterator();
             ArrayList<Event> allEvents = new ArrayList<Event>();
             while(it.hasNext()){
@@ -53,8 +53,8 @@ public class EventServlet extends HttpServlet {
                 allEvents.addAll(events);
             }
             json = new Gson().toJson(allEvents);
-        } else{
-            // Calendar wasn't specified, so do a normal search
+        } else if(user == null || user.equals("")){
+            // User wasn't specified, so search all calendars
             Map<String, List<Event>> results = EventDAO.search(user,query);
             Iterator it = results.entrySet().iterator();
             ArrayList<Event> allEvents = new ArrayList<Event>();
@@ -65,6 +65,17 @@ public class EventServlet extends HttpServlet {
             }
             json = new Gson().toJson(allEvents);
 
+        } else{
+            // User was specified, so do a normal search
+            Map<String, List<Event>> results = EventDAO.search(user,query);
+            Iterator it = results.entrySet().iterator();
+            ArrayList<Event> allEvents = new ArrayList<Event>();
+            while(it.hasNext()){
+                Map.Entry kvp = (Map.Entry) it.next();
+                List<Event> events = (List<Event>)kvp.getValue();
+                allEvents.addAll(events);
+            }
+            json = new Gson().toJson(allEvents);
         }
 
 

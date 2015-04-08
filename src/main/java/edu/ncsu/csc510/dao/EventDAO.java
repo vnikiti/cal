@@ -69,7 +69,7 @@ public class EventDAO {
 			client = new Calendar.Builder(httpTransport, JSON_FACTORY, credential).build();
 			List<String> calList = new ArrayList<String>();
 			System.out.println("GOT USER "+user);
-			if (user == null) {
+			if (user == null || user.equals("")) {
 				calList.add("ncsu.edu_hpasl5cmtenq7biv0omve1nvq8@group.calendar.google.com"); // CSC Calendar
 				calList.add("ncsu.edu_iv41gou4edva6l3sejfg9mjo2k@group.calendar.google.com"); // CCEE Student Organization
 				calList.add("ncsu.edu_vd4gv8ter4klr9sa6efm5vmsq0@group.calendar.google.com"); // Physics Department
