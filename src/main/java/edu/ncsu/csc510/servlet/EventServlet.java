@@ -40,16 +40,34 @@ public class EventServlet extends HttpServlet {
 
 		String query = request.getParameter("q");
 		String user = request.getParameter("u");
+        String cal = request.getParameter("c");
+        String json = "";
+        // Calendar is specified, so we'll search it for the query (we won't use user)
+        if(cal != null && !cal.equals("")){
+            Map<String, List<Event>> results = EventDAO.searchCalendar(cal,query);
+            Iterator it = results.entrySet().iterator();
+            ArrayList<Event> allEvents = new ArrayList<Event>();
+            while(it.hasNext()){
+                Map.Entry kvp = (Map.Entry) it.next();
+                List<Event> events = (List<Event>)kvp.getValue();
+                allEvents.addAll(events);
+            }
+            json = new Gson().toJson(allEvents);
+        } else{
+            // Calendar wasn't specified, so do a normal search
+            Map<String, List<Event>> results = EventDAO.search(user,query);
+            Iterator it = results.entrySet().iterator();
+            ArrayList<Event> allEvents = new ArrayList<Event>();
+            while(it.hasNext()){
+                Map.Entry kvp = (Map.Entry) it.next();
+                List<Event> events = (List<Event>)kvp.getValue();
+                allEvents.addAll(events);
+            }
+            json = new Gson().toJson(allEvents);
 
-		Map<String, List<Event>> results = EventDAO.search(user,query);
-        Iterator it = results.entrySet().iterator();
-        ArrayList<Event> allEvents = new ArrayList<Event>();
-        while(it.hasNext()){
-            Map.Entry kvp = (Map.Entry) it.next();
-            List<Event> events = (List<Event>)kvp.getValue();
-            allEvents.addAll(events);
         }
-		String json = new Gson().toJson(allEvents);
+
+
 
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");

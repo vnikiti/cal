@@ -28,20 +28,21 @@
     var initClickHandlers = function(){
         events.config.searchForm.submit(function(e){
             e.preventDefault();
-            var input = $(this).find("input").first();
-            var query = input.val();
-            console.log("Submitting query: " + query);
-            events.getEvents(query);
+            var cal = $("#searchParam");
+            var query = $("#searchQuery");
+            console.log("Submitting query: " + query.val());
+
+            events.getEvents(query.val(), "", cal.val());
         });
     }
 
-    events.getEvents = function(query, user){
+    events.getEvents = function(query, user, cal){
 
         var request = $.ajax({
             method: 'GET',
             url: events.config.eventUrl,
             dataType: "json",
-            data: {q: query, u: user}
+            data: {q: query, u: user, c: cal}
         });
         // Process the request
         request.done(function(msg){
@@ -72,11 +73,17 @@
     var buildEventContent = function(event){
         var params = {cid: event.organizer.email, eid: event.id};
         var detailUrl = events.config.eventDetailUrl + "?" + $.param(params);
-        var strStart = "N/A";
+        var strStart = "";
         if(event.start != null && event.start.dateTime != null){
             var start = event.start.dateTime.value == null ? null : new Date(event.start.dateTime.value);
             var dateOptions = {weekday: "long", year: "numeric", month: "long", day: "numeric", hour: "2-digit", minute: "2-digit"};
             strStart = start.toLocaleString("en-US", dateOptions)
+        }else if(event.start != null && event.start.date != null){
+            var start = event.start.date.value == null ? null : new Date(event.start.date.value);
+            var dateOptions = {weekday: "long", year: "numeric", month: "long", day: "numeric"};
+            strStart = start.toLocaleString("en-US", dateOptions)
+        } else{
+            strStart = "N/A";
         }
         var imgUrl = events.config.imgUrls["default"];
         if(events.config.imgUrls[event.organizer.email] != null){

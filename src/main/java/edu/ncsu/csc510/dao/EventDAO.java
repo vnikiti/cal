@@ -97,6 +97,37 @@ public class EventDAO {
 		}
 		return null;
 	}
+
+    /**
+     * Search a specific calendar for a string query
+     * @param cal
+     * @param query
+     * @return
+     */
+    public static Map<String, List<Event>> searchCalendar(String cal, String query) {
+        try {
+            // stores the result
+            Map<String, List<Event>> map = new HashMap<String, List<Event>>();
+            // initialize the transport
+            httpTransport = GoogleNetHttpTransport.newTrustedTransport();
+            // authorization
+            Credential credential = authorize();
+            // set up global Calendar instance
+            client = new Calendar.Builder(httpTransport, JSON_FACTORY, credential).build();
+            List<String> calList = new ArrayList<String>();
+            calList.add(cal);
+
+            String sdt = "11/12/2012"; // dd/MM/yyyy
+            String edt = null;
+            map = searchCalendars(calList, query, sdt, edt);
+            return (map);
+        } catch (IOException e) {
+            System.err.println(e.getMessage());
+        } catch (Throwable t) {
+            t.printStackTrace();
+        }
+        return null;
+    }
 	
 	/**
 	 * Used to get event details for a particular event of a particular calendar
