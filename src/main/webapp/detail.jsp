@@ -6,7 +6,7 @@
 <t:layout>
     <div id="event-detail-container" class="row">
         <div class="media-left">
-            <a href="#"><img id="calImg" class="media-object" src="" style="height: 128px; height: 128px;" /></a>
+            <a href="#"><img id="calImg" class="media-object" src=${imgUrl} style="max-height: 128px;" /></a>
         </div>
         <div class="media-body">
             <h2 class="media-heading" id="title">${title}</h2>

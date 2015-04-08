@@ -39,11 +39,27 @@ public class EventDetailServlet extends HttpServlet {
 		//String user = request.getParameter("u");
 
 		Event results = EventDAO.getEventDetail(calId,eventId);
-        // TODO: get the image URL associated with this calendar ID, then pass it on
+        // Hard-coded method to set image Url
+        String eventEmail = results.getOrganizer().getEmail();
+        String imgUrl = "";
+
+        if(eventEmail.equals("ncsu.edu_hpasl5cmtenq7biv0omve1nvq8@group.calendar.google.com")){
+            imgUrl = "http://users.dsic.upv.es/~afernandez/images/logos/csc.png";
+        } else if(eventEmail.equals("ncsu.edu_iv41gou4edva6l3sejfg9mjo2k@group.calendar.google.com")){
+            imgUrl = "http://yt3.ggpht.com/-zwmOVhYtX6Q/AAAAAAAAAAI/AAAAAAAAAAA/Y4Ot1GQ9VeA/s100-c-k-no/photo.jpg";
+        } else if(eventEmail.equals("ncsu.edu_vd4gv8ter4klr9sa6efm5vmsq0@group.calendar.google.com")){
+            imgUrl = "http://www.physics.ncsu.edu/images/Physics.gif";
+        } else if(eventEmail.equals("ncsu.edu_507c8794r25bnebhjrrh3i5c4s@group.calendar.google.com")){
+            imgUrl = "http://moss.csc.ncsu.edu/~mueller/cluster/arc/ncsu_block.gif";
+        } else{
+            imgUrl = "http://moss.csc.ncsu.edu/~mueller/cluster/arc/ncsu_block.gif";
+        }
+
         // Get the event information and pass it to the JSP
         request.setAttribute("location", results.getLocation());
         request.setAttribute("description", results.getDescription());
         request.setAttribute("title", results.getSummary());
+        request.setAttribute("imgUrl", imgUrl);
         DateTime eventDateTime = results.getStart().getDateTime();
         // Try to parse the Google DateTime to Java Date, then format for human reading
         Date date;

@@ -6,7 +6,14 @@
         container : $('#container'),
         eventUrl : '',
         eventDetailUrl: 'eventDetail',
-        searchForm: $("#searchForm")
+        searchForm: $("#searchForm"),
+        imgUrls: {
+            "ncsu.edu_hpasl5cmtenq7biv0omve1nvq8@group.calendar.google.com": "http://users.dsic.upv.es/~afernandez/images/logos/csc.png",
+            "ncsu.edu_iv41gou4edva6l3sejfg9mjo2k@group.calendar.google.com": "http://yt3.ggpht.com/-zwmOVhYtX6Q/AAAAAAAAAAI/AAAAAAAAAAA/Y4Ot1GQ9VeA/s100-c-k-no/photo.jpg",
+            "ncsu.edu_vd4gv8ter4klr9sa6efm5vmsq0@group.calendar.google.com": "http://www.physics.ncsu.edu/images/Physics.gif",
+            "ncsu.edu_507c8794r25bnebhjrrh3i5c4s@group.calendar.google.com": "http://moss.csc.ncsu.edu/~mueller/cluster/arc/ncsu_block.gif",
+            "default" : "http://moss.csc.ncsu.edu/~mueller/cluster/arc/ncsu_block.gif"
+        }
     };
 
     events.init = function(config){
@@ -71,10 +78,13 @@
             var dateOptions = {weekday: "long", year: "numeric", month: "long", day: "numeric", hour: "2-digit", minute: "2-digit"};
             strStart = start.toLocaleString("en-US", dateOptions)
         }
-
+        var imgUrl = events.config.imgUrls["default"];
+        if(events.config.imgUrls[event.organizer.email] != null){
+            imgUrl = events.config.imgUrls[event.organizer.email]
+        }
         var html = '<div class="col-xs-12 col-sm-6 col-md-4 text-truncate">' +
             '<div class="media-left">' +
-                '<a href="#"><img src="' + '" style="width: 64px; height: 64px" /></a>' +
+                '<a href="#"><img src="' + imgUrl + '" style="width: 64px; height: 64px" /></a>' +
             '</div>' +
             '<div class="media-body">' +
                 '<h2 class="media-heading">' + event.summary + '</h2>' +
