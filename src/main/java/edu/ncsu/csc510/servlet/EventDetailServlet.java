@@ -1,8 +1,11 @@
 package edu.ncsu.csc510.servlet;
 
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -60,13 +63,42 @@ public class EventDetailServlet extends HttpServlet {
         request.setAttribute("description", results.getDescription());
         request.setAttribute("title", results.getSummary());
         request.setAttribute("imgUrl", imgUrl);
+     
+        //Constructing Add to Calendar URL
+        String strSDT = null;
+        String strEDT = null;
+        DateTime eventSDT = results.getStart().getDateTime();
+        DateTime eventEDT = results.getEnd().getDateTime();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+        Date sdate,edate;
+		try {
+			sdate = df.parse(eventSDT.toString());
+			edate = df.parse(eventEDT.toString());
+			SimpleDateFormat mySdf = new SimpleDateFormat("yyyyMMdd'T'HHmmss");
+		    strSDT = mySdf.format(sdate);
+		    strEDT = mySdf.format(edate);
+		} catch (ParseException e1) {
+			e1.printStackTrace();
+		}
+	   String s= URLEncoder.encode(results.getDescription(), "UTF-8");
+	   int n = 1900; //max length of description in characters
+	   String upToNCharacters = s.substring(0, Math.min(s.length(), n));
+       String addToCalUrl = "http://www.google.com/calendar/event?action=TEMPLATE"
+        		+"&text="+URLEncoder.encode(results.getSummary(), "UTF-8")
+        		+"&details="+upToNCharacters
+        		+"&dates="+strSDT	//"20151112T190000"
+        		+"/"+strEDT			//"20151112T200000"
+        		+"&location="+results.getLocation() ;
+			  
+        System.out.println("addToCalUrl:: " + addToCalUrl);
+        request.setAttribute("addToCalUrl",addToCalUrl);
+        
         DateTime eventDateTime = results.getStart().getDateTime();
         // Try to parse the Google DateTime to Java Date, then format for human reading
         Date date;
         try{
             SimpleDateFormat eventSdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
             date = eventSdf.parse(eventDateTime.toString());
-
             SimpleDateFormat mySdf = new SimpleDateFormat("E, M d, yyyy 'at' h:mm a");
             String start = mySdf.format(date);
             request.setAttribute("start", start);
@@ -84,4 +116,4 @@ public class EventDetailServlet extends HttpServlet {
 		response.getWriter().write(json);
 	}
 
-}
+}		

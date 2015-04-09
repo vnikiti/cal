@@ -13,7 +13,7 @@
             <h4 id="start">${start}</h4>
             <h4 id="location">${location}</h4>
             <p>
-                <a id="addToCalLink" href="#"><img src="" /></a>
+                <a id="addToCalLink" href=${addToCalUrl} target="_blank"><img src="http://www.fis.ncsu.edu/cashier/calendar/calendar_plus_en.gif" /></a>
             </p>
         </div>
         <hr>

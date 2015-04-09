@@ -18,8 +18,6 @@ import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.calendar.Calendar;
 import com.google.api.services.calendar.CalendarScopes;
-import com.google.api.services.calendar.model.CalendarList;
-import com.google.api.services.calendar.model.CalendarListEntry;
 import com.google.api.services.calendar.model.Event;
 import com.google.api.services.calendar.model.Events;
 
@@ -86,7 +84,7 @@ public class EventDAO {
 					calList.add(uc.getCalendarId());
 				}
 			}
-			String sdt = "11/12/2012"; // dd/MM/yyyy
+			String sdt = null;
 			String edt = null;
 			map = searchCalendars(calList, query, sdt, edt);
 			return (map);
@@ -117,8 +115,8 @@ public class EventDAO {
             List<String> calList = new ArrayList<String>();
             calList.add(cal);
 
-            String sdt = "11/12/2012"; // dd/MM/yyyy
-            String edt = null;
+			String sdt = null; 
+			String edt = null;
             map = searchCalendars(calList, query, sdt, edt);
             return (map);
         } catch (IOException e) {
@@ -172,10 +170,6 @@ public class EventDAO {
 
 		Map<String, List<Event>> map = new HashMap<String, List<Event>>();
 
-		if (qStr == null && sdt == null && edt == null) {
-			System.out.println("There must be atleast one search term");
-			return null;
-		}
 		if (calList != null) {
 			SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 			com.google.api.client.util.DateTime timeMax = null;
@@ -187,33 +181,21 @@ public class EventDAO {
 				if (qStr != null && !qStr.isEmpty()) {
 					q = qStr;
 				}
-				if (sdt != null && !sdt.isEmpty()) {
-					Date sdate = formatter.parse(sdt);
-					String sdateStr = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX").format(sdate);
-					timeMin = new com.google.api.client.util.DateTime(sdateStr);
-				}
+				Date sdate = new Date();;
+				if (sdt != null && !sdt.isEmpty())
+					sdate = formatter.parse(sdt);
+				String sdateStr = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX").format(sdate);
+				timeMin = new com.google.api.client.util.DateTime(sdateStr);
 				if (edt != null && !edt.isEmpty()) {
 					Date edate = formatter.parse(edt);
 					String edateStr = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX").format(edate);
 					timeMax = new com.google.api.client.util.DateTime(edateStr);
 				}
-				Events events = client.events().list(cal).setQ(q).setTimeMax(timeMax).setTimeMin(timeMin).execute();
+				Events events = client.events().list(cal).setQ(q).setTimeMax(timeMax).setTimeMin(timeMin).setShowDeleted(false)
+						.setOrderBy("startTime").setSingleEvents(true).execute();
 				map.put(cal, events.getItems());
 			}
 		}
 		return map;
-	}
-	
-	
-	
-	private static CalendarList getClientCalendars() throws IOException {
-		// View.header("Search Calendars");
-		CalendarList feed = client.calendarList().list().execute();
-		if (feed.getItems() != null) {
-			for (CalendarListEntry entry : feed.getItems()) {
-				System.out.println("ID: " + entry.getId());
-			}
-		}
-		return feed;
 	}
 }
