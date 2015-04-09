@@ -89,15 +89,15 @@
         if(events.config.imgUrls[event.organizer.email] != null){
             imgUrl = events.config.imgUrls[event.organizer.email]
         }
-        var html = '<div class="col-xs-12 col-sm-6 col-md-4 text-truncate">' +
+        var html = '<div class="col-xs-12 col-sm-6 text-truncate">' +
             '<div class="media-left">' +
                 '<a href="#"><img src="' + imgUrl + '" style="width: 64px; height: 64px" /></a>' +
             '</div>' +
             '<div class="media-body">' +
                 '<h2 class="media-heading">' + event.summary + '</h2>' +
                 '<h4>' + strStart + '</h4>' +
-                '<h5>' + (event.location == null? "" : event.location) + '</h5>' +
-                '<p>' + (event.description == null? "" : event.description) + '</p>' +
+                '<h5>' + (event.location == null? "N/A" : event.location) + '</h5>' +
+                '<p>' + (event.description == null? "N/A" : event.description) + '</p>' +
                 '<p><a href="'+ detailUrl + '" class="btn btn-default" role="button">Details</a></p>' +
             '</div>' +
             '</div>';
