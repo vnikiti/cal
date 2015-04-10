@@ -91,18 +91,31 @@ public class SettingsServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException,
             IOException {
 
-        Gson gson = new Gson();
-        Type type = new TypeToken<List<UserCalendar>>(){}.getType();
-        List<UserCalendar> userCalendarList = null;
-        try {
-             userCalendarList = gson.fromJson(request.getReader(), type);
+        String userId = request.getParameter("userId");
+        String calendarIds[] = request.getParameterValues("calendarId");
+        JsonObject ret = new JsonObject();
+
+        if(calendarIds.length == 0){
+            ret.addProperty("success", false);
+            ret.addProperty("error", "You must specify at least one calendar!");
         }
-        catch(Exception e)
-        {
-            e.printStackTrace();
+        else{
+            try {
+                // TODO: Try to add the calendars by ID to the user's preferred calendars
+                ret.addProperty("success", true);
+            }
+            catch(Exception e)
+            {
+                e.printStackTrace();
+                ret.addProperty("success", false);
+                ret.addProperty("error", e.getMessage());
+            }
         }
 
-        UserCalendarDAO.addUserCalendars(userCalendarList);
+
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().println(ret.toString());
     }
 
 }
