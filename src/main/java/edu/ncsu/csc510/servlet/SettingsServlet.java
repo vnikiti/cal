@@ -102,6 +102,12 @@ public class SettingsServlet extends HttpServlet {
         else{
             try {
                 // TODO: Try to add the calendars by ID to the user's preferred calendars
+                List<UserCalendar> results = new ArrayList<UserCalendar>();
+                for (String cal : calendarIds)
+                {
+                    results.add(new UserCalendar(userId,cal));
+                }
+                UserCalendarDAO.addUserCalendars(results);
                 ret.addProperty("success", true);
             }
             catch(Exception e)
