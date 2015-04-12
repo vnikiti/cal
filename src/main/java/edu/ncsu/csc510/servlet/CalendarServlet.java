@@ -14,11 +14,9 @@ import com.google.api.client.extensions.jdo.JdoDataStoreFactory;
 import com.google.api.client.extensions.servlet.auth.oauth2.AbstractAuthorizationCodeServlet;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow.Builder;
-import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.http.GenericUrl;
 import com.google.api.client.http.HttpTransport;
-import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.calendar.CalendarScopes;
@@ -78,9 +76,10 @@ public class CalendarServlet extends AbstractAuthorizationCodeServlet {
 
 	@Override
 	protected String getRedirectUri(HttpServletRequest req) throws ServletException, IOException {
-		GenericUrl url = new GenericUrl(req.getRequestURL().toString());
-		url.setRawPath("/oauth2callback");
-		return url.build();
+		//GenericUrl url = new GenericUrl(req.getRequestURL().toString());
+		//url.setRawPath("/oauth2callback");
+		//return url.build();
+		return "http://cal-csc510.rhcloud.com/oauth2callback";
 	}
 
 	@Override
@@ -96,7 +95,7 @@ public class CalendarServlet extends AbstractAuthorizationCodeServlet {
 				JSON_FACTORY, CLIENT_ID, CLIENT_SECRET,
 		        Collections.singleton(CalendarScopes.CALENDAR));
 		
-		builder.setDataStoreFactory(dataStoreFactory);
+		//builder.setDataStoreFactory(dataStoreFactory);
 		builder.setAccessType("offline");
 		AuthorizationCodeFlow authFlow = builder.build();
 				
@@ -105,7 +104,9 @@ public class CalendarServlet extends AbstractAuthorizationCodeServlet {
 
 	@Override
 	protected String getUserId(HttpServletRequest req) throws ServletException, IOException {
-		return null;
-		// TODO: return user ID
+		//req.getUserPrincipal().toString();
+		String sessionId = req.getSession().getId();
+		System.out.println("userId: " + sessionId);
+		return sessionId;
 	}
 }

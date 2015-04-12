@@ -6,15 +6,12 @@
     <persistence-manager-factory name="transactions-optional">
         <property name="javax.jdo.PersistenceManagerFactoryClass" value="org.datanucleus.api.jdo.JDOPersistenceManagerFactory" />
         <property name="javax.jdo.option.ConnectionDriverName" value="com.mysql.jdbc.Driver" />
-        <property name="javax.jdo.option.ConnectionURL" value="jdbc:mysql://127.12.104.130:3306/cal" />
+        <property name="javax.jdo.option.ConnectionURL" value="jdbc:mysql://127.12.104.129:3306/jdo" />
         <property name="javax.jdo.option.ConnectionUserName" value="adminCU6MEuD" />
         <property name="javax.jdo.option.ConnectionPassword" value="xhcLl9QNsZwA" />
-        <property name="datanucleus.autoCreateSchema" value="true" />
-        <property name="datanucleus.validateTables" value="false" />
-        <property name="datanucleus.validateConstraints" value="false" />
+        <property name="datanucleus.schema.autoCreateAll" value="true" />
         <property name="javax.jdo.option.NontransactionalRead" value="true" />
         <property name="javax.jdo.option.NontransactionalWrite" value="true" />
         <property name="javax.jdo.option.RetainValues" value="true" />
-        <property name="datanucleus.appengine.autoCreateDatastoreTxns" value="false" />
     </persistence-manager-factory>
 </jdoconfig>
