@@ -39,7 +39,7 @@ import java.util.ArrayList;
  * Servlet implementation class CalendarServlet
  */
 @WebServlet(asyncSupported = true, urlPatterns = { "/user" })
-public class UserServlet extends AbstractAuthorizationCodeServlet {
+public class UserServlet {
 	private static final long serialVersionUID = 1L;
 
 	private static final String CLIENT_ID = "794973057266-titj4dapr8hoq2lchtc17b67tbcqhgjr.apps.googleusercontent.com";
@@ -67,7 +67,6 @@ public class UserServlet extends AbstractAuthorizationCodeServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Credential credential = (Credential) request.getSession().getAttribute("googleCredential");
 		
@@ -87,22 +86,4 @@ public class UserServlet extends AbstractAuthorizationCodeServlet {
 		response.setCharacterEncoding("UTF-8");
 		response.getWriter().write(json);
 	}
-
-	@Override
-    protected String getRedirectUri(HttpServletRequest arg0) throws ServletException, IOException {
-	    // TODO Auto-generated method stub
-	    return null;
-    }
-
-	@Override
-    protected String getUserId(HttpServletRequest arg0) throws ServletException, IOException {
-	    // TODO Auto-generated method stub
-	    return null;
-    }
-
-	@Override
-    protected AuthorizationCodeFlow initializeFlow() throws ServletException, IOException {
-	    // TODO Auto-generated method stub
-	    return null;
-    }
 }
