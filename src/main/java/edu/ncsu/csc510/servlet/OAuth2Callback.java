@@ -26,7 +26,9 @@ import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.calendar.CalendarScopes;
+import com.google.api.services.oauth2.Oauth2;
 import com.google.api.services.oauth2.Oauth2Scopes;
+import com.google.api.services.oauth2.model.Userinfoplus;
 
 import edu.ncsu.csc510.dao.PMF;
 
@@ -35,7 +37,7 @@ import edu.ncsu.csc510.dao.PMF;
  */
 @WebServlet(asyncSupported = true, urlPatterns = { "/oauth2callback" })
 public class OAuth2Callback extends AbstractAuthorizationCodeCallbackServlet {
-	private static final long serialVersionUID = 2585233320218049109L;;
+	private static final long serialVersionUID = 2585233320218049109L;
 	
 	private static final String CLIENT_ID = "794973057266-titj4dapr8hoq2lchtc17b67tbcqhgjr.apps.googleusercontent.com";
 	private static final String CLIENT_SECRET = "F-5GlFlph4XprFbhdeI1NHb2";
@@ -52,7 +54,18 @@ public class OAuth2Callback extends AbstractAuthorizationCodeCallbackServlet {
 	@Override
 	protected void onSuccess(HttpServletRequest req, HttpServletResponse resp, Credential credential)
 	        throws ServletException, IOException {
-		req.getSession().setAttribute("googleCredential", credential);
+		
+		try {
+	        httpTransport = GoogleNetHttpTransport.newTrustedTransport();
+        } catch (GeneralSecurityException e) {
+	        e.printStackTrace();
+        }
+		
+		Oauth2 oauth2 = new Oauth2.Builder(httpTransport, JSON_FACTORY, credential).build();
+		Userinfoplus userinfo = oauth2.userinfo().get().execute();
+		
+		req.getSession().setAttribute("userinfo", userinfo);
+				
 		resp.sendRedirect("/");
 	}
 
