@@ -39,7 +39,12 @@ public class EventServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Userinfoplus userinfo = (Userinfoplus) request.getSession().getAttribute("userinfo");
-        String user = userinfo.getEmail();
+
+        String user = null;
+        
+        if(userinfo != null) {
+        	user = userinfo.getEmail();
+        }
         
 		String query = request.getParameter("q");
         String cal = request.getParameter("c");
