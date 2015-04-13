@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.api.services.calendar.model.Event;
+import com.google.api.services.oauth2.model.Userinfoplus;
 import com.google.gson.Gson;
 
 import edu.ncsu.csc510.dao.EventDAO;
@@ -37,9 +38,10 @@ public class EventServlet extends HttpServlet {
 	 *      response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        Userinfoplus userinfo = (Userinfoplus) request.getSession().getAttribute("userinfo");
+        String user = userinfo.getEmail();
+        
 		String query = request.getParameter("q");
-		String user = request.getParameter("u");
         String cal = request.getParameter("c");
         String json = "";
         // Calendar is specified, so we'll search it for the query (we won't use user)

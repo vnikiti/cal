@@ -32,7 +32,7 @@
             var query = $("#searchQuery");
             console.log("Submitting query: " + query.val());
 
-            events.getEvents(query.val(), "", cal.val());
+            events.getEvents(query.val(), cal.val());
         });
     }
 
@@ -42,7 +42,7 @@
             method: 'GET',
             url: events.config.eventUrl,
             dataType: "json",
-            data: {q: query, u: user, c: cal}
+            data: {q: query, c: cal}
         });
         // Process the request
         request.done(function(msg){
