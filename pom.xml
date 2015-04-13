@@ -68,6 +68,11 @@
             <version>v3-rev121-1.20.0</version>
         </dependency>
         <dependency>
+            <groupId>com.google.apis</groupId>
+            <artifactId>google-api-services-oauth2</artifactId>
+            <version>v2-rev89-1.20.0</version>
+        </dependency>
+        <dependency>
             <groupId>com.google.api-client</groupId>
             <artifactId>google-api-client</artifactId>
             <version>1.20.0</version>
@@ -76,11 +81,11 @@
             <groupId>com.google.api-client</groupId>
             <artifactId>google-api-client-servlet</artifactId>
             <version>1.20.0</version>
-            <exclusions>		
-                <exclusion>		
-                    <groupId>javax.servlet</groupId>		
-                    <artifactId>servlet-api</artifactId>		
-                </exclusion>		
+            <exclusions>
+                <exclusion>
+                    <groupId>javax.servlet</groupId>
+                    <artifactId>servlet-api</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
         <dependency>
