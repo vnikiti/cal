@@ -117,7 +117,7 @@ public class SettingsServlet extends HttpServlet {
                 {
                     results.add(new UserCalendar(userId,cal));
                 }
-                UserCalendarDAO.addUserCalendars(results);
+                UserCalendarDAO.addUserCalendars(userId, results);
                 ret.addProperty("success", true);
             }
             catch(Exception e)

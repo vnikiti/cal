@@ -70,7 +70,7 @@ public class UserCalendarDAO {
         return calendars;
     }
 
-    public static void addUserCalendars(List<UserCalendar> userCalendarList)
+    public static void addUserCalendars(String userId, List<UserCalendar> userCalendarList)
     {
         Connection connection = null;
         Statement statement = null;
@@ -82,12 +82,12 @@ public class UserCalendarDAO {
             statement = connection.createStatement();
 
             if (userCalendarList.size() >= 1) {
-                String delete = "DELETE FROM user_calendar WHERE  userId = '" + userCalendarList.get(1).getUserId() + "'";
+                String delete = "DELETE FROM user_calendar WHERE  userId = '" + userId + "'";
                 System.out.println(delete);
                 statement.executeUpdate(delete);
 
                 for (UserCalendar uc : userCalendarList) {
-                    String insert = "INSERT INTO `user_calendar`(`userId`, `calendarId`) VALUES ('" + uc.getUserId() + "','" + uc.getCalendarId() + "')";
+                    String insert = "INSERT INTO `user_calendar`(`userId`, `calendarId`) VALUES ('" + userId + "','" + uc.getCalendarId() + "')";
                     System.out.println(insert);
                     statement.executeUpdate(insert);
                 }
