@@ -1,7 +1,6 @@
 package edu.ncsu.csc510.servlet;
 
 import java.io.IOException;
-import java.security.GeneralSecurityException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,12 +8,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.google.api.client.auth.oauth2.Credential;
-import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
-import com.google.api.client.http.HttpTransport;
-import com.google.api.client.json.JsonFactory;
-import com.google.api.client.json.jackson2.JacksonFactory;
-import com.google.api.services.oauth2.Oauth2;
 import com.google.api.services.oauth2.model.Userinfoplus;
 import com.google.gson.Gson;
 
@@ -23,13 +16,11 @@ import com.google.gson.Gson;
  */
 @WebServlet(asyncSupported = true, urlPatterns = { "/user" })
 public class UserServlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-
-	/** Global instance of the HTTP transport. */
-	private static HttpTransport httpTransport;
-
-	/** Global instance of the JSON factory. */
-	private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
+	
+	/**
+	 * 
+	 */
+    private static final long serialVersionUID = -7627044970325225882L;
 
 	/**
 	 * Default constructor.
@@ -44,17 +35,7 @@ public class UserServlet extends HttpServlet {
 	 *      response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Credential credential = (Credential) request.getSession().getAttribute("googleCredential");
-		
-		try {
-	        httpTransport = GoogleNetHttpTransport.newTrustedTransport();
-        } catch (GeneralSecurityException e) {
-	        e.printStackTrace();
-        }
-		
-
-		Oauth2 oauth2 = new Oauth2.Builder(httpTransport, JSON_FACTORY, credential).build();
-		Userinfoplus userinfo = oauth2.userinfo().get().execute();
+		Userinfoplus userinfo = (Userinfoplus) request.getSession().getAttribute("userinfo");
 
 		String json = new Gson().toJson(userinfo);
 

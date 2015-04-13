@@ -60,11 +60,11 @@
           </form>
 
           <ul class="nav navbar-nav navbar-right">
-            <% if(request.getUserPrincipal() == null) { %>
-                <li><a href="#">Log in</a></li>
+            <% if(request.getSession().getAttribute("userinfo") == null) { %>
+                <li><a href="/login">Log in</a></li>
             <% } else { %>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"><%= request.getUserPrincipal().getName() %><span class="caret"></span></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"><%= ((com.google.api.services.oauth2.model.Userinfoplus)request.getSession().getAttribute("userinfo")).getName() %><span class="caret"></span></a>
                     <ul class="dropdown-menu" role="menu">
                         <li><a href="#">Settings</a></li>
                         <li class="divider"></li>

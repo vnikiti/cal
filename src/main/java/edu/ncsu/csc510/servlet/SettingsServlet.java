@@ -16,13 +16,14 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.Null;
 
 import com.google.api.services.calendar.model.Event;
+import com.google.api.services.oauth2.model.Userinfoplus;
 import com.google.gson.Gson;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-
 import com.google.gson.reflect.TypeToken;
+
 import edu.ncsu.csc510.dao.EventDAO;
 import edu.ncsu.csc510.dao.UserCalendarDAO;
 import edu.ncsu.csc510.model.UserCalendar;
@@ -54,8 +55,10 @@ public class SettingsServlet extends HttpServlet {
         allCalendars.add("ncsu.edu_vd4gv8ter4klr9sa6efm5vmsq0@group.calendar.google.com"); // Physics Department
         allCalendars.add("ncsu.edu_507c8794r25bnebhjrrh3i5c4s@group.calendar.google.com"); // Academic Calendar
 
-        String user = request.getParameter("u");
-        System.out.println("GOT USER "+ user);
+        Userinfoplus userinfo = (Userinfoplus) request.getSession().getAttribute("userinfo");
+        
+        String user = userinfo.getEmail();
+        System.out.println("GOT USER " + user);
 
         List<UserCalendar> results = UserCalendarDAO.getUserCalendars(user);
         List<String> userCalendarNames = new ArrayList<String>();
