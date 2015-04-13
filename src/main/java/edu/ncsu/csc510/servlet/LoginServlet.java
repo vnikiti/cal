@@ -20,6 +20,7 @@ import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.calendar.CalendarScopes;
+import com.google.api.services.oauth2.Oauth2Scopes;
 import com.google.gson.Gson;
 
 import edu.ncsu.csc510.dao.PMF;
@@ -73,9 +74,12 @@ public class LoginServlet extends AbstractAuthorizationCodeServlet {
 	        e.printStackTrace();
         }
 		
+		List<String> scopes = new ArrayList<String>();
+		scopes.add(CalendarScopes.CALENDAR);
+		scopes.add(Oauth2Scopes.USERINFO_EMAIL);
+		
 		Builder builder = new GoogleAuthorizationCodeFlow.Builder(httpTransport, 
-				JSON_FACTORY, CLIENT_ID, CLIENT_SECRET,
-		        Collections.singleton(CalendarScopes.CALENDAR));
+				JSON_FACTORY, CLIENT_ID, CLIENT_SECRET, scopes);
 		
 		//builder.setDataStoreFactory(dataStoreFactory);
 		builder.setAccessType("offline");
