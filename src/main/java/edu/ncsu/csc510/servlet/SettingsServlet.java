@@ -33,9 +33,13 @@ import edu.ncsu.csc510.model.UserCalendar;
  */
 @WebServlet("/settings")
 public class SettingsServlet extends HttpServlet {
-    //private static final long serialVersionUID = 1L;
 
     /**
+	 * 
+	 */
+    private static final long serialVersionUID = -2400915571864192660L;
+
+	/**
      * @see HttpServlet#HttpServlet()
      */
     public SettingsServlet() {
@@ -93,8 +97,11 @@ public class SettingsServlet extends HttpServlet {
      */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException,
             IOException {
+    	
+        Userinfoplus userinfo = (Userinfoplus) request.getSession().getAttribute("userinfo");
 
-        String userId = request.getParameter("userId");
+        String userId = userinfo.getEmail();
+        System.out.println("Saving settings for " + userId);
         String calendarIds[] = request.getParameterValues("calendarId");
         JsonObject ret = new JsonObject();
 

@@ -7,7 +7,6 @@
 	<div class="row">
 		<form action="settings" method="post" class="form-group" id="settingsForm">
 			<p class="small">Select the calendars you are interested in viewing:</p>
-            <input type="hidden" value="jlschuma" name="userId"/>
             <c:forEach var="cal" items="${calNames}">
                 <c:choose>
                     <c:when test="${userCalendars.contains(cal.key)}">

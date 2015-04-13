@@ -66,9 +66,9 @@
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"><%= ((com.google.api.services.oauth2.model.Userinfoplus)request.getSession().getAttribute("userinfo")).getName() %><span class="caret"></span></a>
                     <ul class="dropdown-menu" role="menu">
-                        <li><a href="#">Settings</a></li>
+                        <li><a href="/settings">Settings</a></li>
                         <li class="divider"></li>
-                        <li><a href="#">Log out</a></li>
+                        <li><a href="https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=http://cal-csc510.rhcloud.com/">Log out</a></li>
                     </ul>
                 </li>
             <% } %>
