@@ -68,7 +68,7 @@
                     <ul class="dropdown-menu" role="menu">
                         <li><a href="/settings">Settings</a></li>
                         <li class="divider"></li>
-                        <li><a href="https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=http://cal-csc510.rhcloud.com/">Log out</a></li>
+                        <li><a href="https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=http://cal-csc510.rhcloud.com/logout">Log out</a></li>
                     </ul>
                 </li>
             <% } %>
