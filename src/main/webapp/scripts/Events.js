@@ -36,7 +36,7 @@
         });
     }
 
-    events.getEvents = function(query, user, cal){
+    events.getEvents = function(query, cal){
 
         var request = $.ajax({
             method: 'GET',
