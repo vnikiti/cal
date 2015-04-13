@@ -30,10 +30,10 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * Servlet implementation class CalendarServlet
+ * Servlet implementation class LoginServlet
  */
-@WebServlet(asyncSupported = true, urlPatterns = { "/calendar" })
-public class CalendarServlet extends AbstractAuthorizationCodeServlet {
+@WebServlet(asyncSupported = true, urlPatterns = { "/login" })
+public class LoginServlet extends AbstractAuthorizationCodeServlet {
 	private static final long serialVersionUID = 1L;
 	
 	private static final String CLIENT_ID = "794973057266-titj4dapr8hoq2lchtc17b67tbcqhgjr.apps.googleusercontent.com";
@@ -51,27 +51,9 @@ public class CalendarServlet extends AbstractAuthorizationCodeServlet {
 	/**
 	 * Default constructor.
 	 */
-	public CalendarServlet() {
+	public LoginServlet() {
 		// TODO Auto-generated constructor stub
 
-	}
-
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
-	@Override
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// do stuff
-		List<String> list = new ArrayList<String>();
-		list.add("item1");
-		list.add("item2");
-		list.add("item3");
-		String json = new Gson().toJson(list);
-
-		response.setContentType("application/json");
-		response.setCharacterEncoding("UTF-8");
-		response.getWriter().write(json);
 	}
 
 	@Override
@@ -98,7 +80,7 @@ public class CalendarServlet extends AbstractAuthorizationCodeServlet {
 		//builder.setDataStoreFactory(dataStoreFactory);
 		builder.setAccessType("offline");
 		AuthorizationCodeFlow authFlow = builder.build();
-				
+
 		return authFlow;
 	}
 

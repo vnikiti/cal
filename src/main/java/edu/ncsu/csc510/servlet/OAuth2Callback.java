@@ -49,6 +49,7 @@ public class OAuth2Callback extends AbstractAuthorizationCodeCallbackServlet {
 	@Override
 	protected void onSuccess(HttpServletRequest req, HttpServletResponse resp, Credential credential)
 	        throws ServletException, IOException {
+		req.getSession().setAttribute("googleCredential", credential);
 		resp.sendRedirect("/");
 	}
 
