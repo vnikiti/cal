@@ -117,6 +117,7 @@ public class EventDetailServlet extends HttpServlet {
         
         
         // Try to parse the Google DateTime to Java Date, then format for human reading
+        //Handled for no time in datetime
         DateTime eventDateTime = results.getStart().getDateTime();
         Date date;
         if(eventDateTime != null)
