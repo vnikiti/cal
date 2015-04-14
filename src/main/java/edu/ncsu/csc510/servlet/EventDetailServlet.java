@@ -65,45 +65,84 @@ public class EventDetailServlet extends HttpServlet {
         request.setAttribute("imgUrl", imgUrl);
      
         //Constructing Add to Calendar URL
-        String strSDT = null;
-        String strEDT = null;
-        DateTime eventSDT = results.getStart().getDateTime();
-        DateTime eventEDT = results.getEnd().getDateTime();
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
-        Date sdate,edate;
-		try {
-			sdate = df.parse(eventSDT.toString());
-			edate = df.parse(eventEDT.toString());
-			SimpleDateFormat mySdf = new SimpleDateFormat("yyyyMMdd'T'HHmmss");
-		    strSDT = mySdf.format(sdate);
-		    strEDT = mySdf.format(edate);
-		} catch (ParseException e1) {
-			e1.printStackTrace();
-		}
-	   String s= URLEncoder.encode(results.getDescription(), "UTF-8");
-	   int n = 1900; //max length of description in characters
-	   String upToNCharacters = s.substring(0, Math.min(s.length(), n));
-       String addToCalUrl = "http://www.google.com/calendar/event?action=TEMPLATE"
-        		+"&text="+URLEncoder.encode(results.getSummary(), "UTF-8")
-        		+"&details="+upToNCharacters
-        		+"&dates="+strSDT	//"20151112T190000"
-        		+"/"+strEDT			//"20151112T200000"
-        		+"&location="+results.getLocation() ;
-			  
-        System.out.println("addToCalUrl:: " + addToCalUrl);
-        request.setAttribute("addToCalUrl",addToCalUrl);
+        StringBuilder addToCalUrl = new StringBuilder( "http://www.google.com/calendar/event?action=TEMPLATE" );
+        if(results.getSummary() != null)
+        {
+		    String summary= URLEncoder.encode(results.getSummary(), "UTF-8");
+		    addToCalUrl.append("&text=");
+		    addToCalUrl.append(summary);
+	    }
+        if(results.getDescription() != null)
+        {
+		    String s= URLEncoder.encode(results.getDescription(), "UTF-8");
+		    int n = 1900; //max length of description in characters
+		    String nlongDesc = s.substring(0, Math.min(s.length(), n));
+		    addToCalUrl.append("&details=");
+		    addToCalUrl.append(nlongDesc);
+	    }
+        if(results.getStart() != null && results.getEnd() != null )
+        {
+	        DateTime eventSDT = results.getStart().getDateTime();
+	        DateTime eventEDT = results.getEnd().getDateTime();  
+	        Date sdate,edate;
+			try {
+				if(eventSDT != null && eventEDT != null){
+					SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+					sdate = df.parse(eventSDT.toString());
+					edate = df.parse(eventEDT.toString());
+				}
+				else{
+					DateTime eventSD = results.getStart().getDate();
+			        DateTime eventED = results.getEnd().getDate();
+			        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+					sdate = df.parse(eventSD.toString());
+					edate = df.parse(eventED.toString());
+				}
+				SimpleDateFormat mySdf = new SimpleDateFormat("yyyyMMdd'T'HHmmss");
+				addToCalUrl.append("&dates=");
+			    addToCalUrl.append( mySdf.format(sdate) );
+			    addToCalUrl.append("/");
+			    addToCalUrl.append( mySdf.format(edate) );
+			} catch (ParseException e1) {
+				e1.printStackTrace();
+			}
+        }
+        if(results.getLocation() != null)
+        {
+		    addToCalUrl.append("&location=");
+		    addToCalUrl.append(results.getLocation());
+	    }
+        request.setAttribute("addToCalUrl",addToCalUrl.toString());
+        /*End of detail URL construction- Gargi*/
         
-        DateTime eventDateTime = results.getStart().getDateTime();
+        
         // Try to parse the Google DateTime to Java Date, then format for human reading
+        DateTime eventDateTime = results.getStart().getDateTime();
         Date date;
-        try{
-            SimpleDateFormat eventSdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
-            date = eventSdf.parse(eventDateTime.toString());
-            SimpleDateFormat mySdf = new SimpleDateFormat("E, M d, yyyy 'at' h:mm a");
-            String start = mySdf.format(date);
-            request.setAttribute("start", start);
-        } catch(Exception e){
-
+        if(eventDateTime != null)
+        {
+	            SimpleDateFormat eventSdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+	            try {
+					date = eventSdf.parse(eventDateTime.toString());
+					SimpleDateFormat mySdf = new SimpleDateFormat("E, M d, yyyy 'at' h:mm a");
+		            String start = mySdf.format(date);
+		            request.setAttribute("start", start);
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+        }
+        else
+        {
+        	DateTime eventDate = results.getStart().getDate();
+        	SimpleDateFormat eventSdf = new SimpleDateFormat("yyyy-MM-dd");
+            try {
+				date = eventSdf.parse(eventDate.toString());
+				SimpleDateFormat mySdf = new SimpleDateFormat("E, M d, yyyy 'at' h:mm a");
+	            String start = mySdf.format(date);
+	            request.setAttribute("start", start);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
         }
 
         // Pass on to the JSP
