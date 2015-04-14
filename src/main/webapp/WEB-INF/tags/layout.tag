@@ -78,7 +78,7 @@
     </div>
       </div><!-- /.container-fluid -->
     </nav>
-    <div id="container" class="container" style="margin-left: 20px; margin-right: 20px;">
+    <div id="container" class="container">
       <jsp:doBody/>
     </div>
   </body>

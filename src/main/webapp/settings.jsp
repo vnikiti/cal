@@ -5,28 +5,30 @@
 <t:layout>
 
 	<div class="row">
-		<form action="settings" method="post" class="form-group" id="settingsForm">
-			<p class="small">Select the calendars you are interested in viewing:</p>
-            <c:forEach var="cal" items="${calNames}">
-                <c:choose>
-                    <c:when test="${userCalendars.contains(cal.key)}">
-                        <label class="checkbox">
-                            <input type="checkbox" name="calendarId" value="${cal.key}" checked="checked" /> ${cal.value}
-                        </label>
-                    </c:when>
-                    <c:otherwise>
-                        <label class="checkbox">
-                            <input type="checkbox" name="calendarId" value="${cal.key}" /> ${cal.value}
-                        </label>
-                    </c:otherwise>
-                </c:choose>
+	    <div class="col-xs-12 col-sm-6">
+	        <form action="settings" method="post" class="form-group" id="settingsForm">
+                <p class="small">Select the calendars you are interested in viewing:</p>
+                <c:forEach var="cal" items="${calNames}">
+                    <c:choose>
+                        <c:when test="${userCalendars.contains(cal.key)}">
+                            <label class="checkbox">
+                                <input type="checkbox" name="calendarId" value="${cal.key}" checked="checked" /> ${cal.value}
+                            </label>
+                        </c:when>
+                        <c:otherwise>
+                            <label class="checkbox">
+                                <input type="checkbox" name="calendarId" value="${cal.key}" /> ${cal.value}
+                            </label>
+                        </c:otherwise>
+                    </c:choose>
 
-            </c:forEach>
+                </c:forEach>
 
-			<button class="btn btn-default" type="submit">Save</button>
-		</form>
-		<p id="responseContainer">
-		</p>
+                <button class="btn btn-default" type="submit">Save</button>
+            </form>
+            <p id="responseContainer">
+            </p>
+	    </div>
 	</div>
 
 </t:layout>
