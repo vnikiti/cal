@@ -80,6 +80,7 @@
             strStart = start.toLocaleString("en-US", dateOptions)
         }else if(event.start != null && event.start.date != null){
             var start = event.start.date.value == null ? null : new Date(event.start.date.value);
+            start = new Date(start.getUTCFullYear(), start.getUTCMonth(), start.getUTCDate());
             var dateOptions = {weekday: "long", year: "numeric", month: "long", day: "numeric"};
             strStart = start.toLocaleString("en-US", dateOptions)
         } else{
