@@ -11,14 +11,20 @@
                 <c:forEach var="cal" items="${calNames}">
                     <c:choose>
                         <c:when test="${userCalendars.contains(cal.key)}">
-                            <label class="checkbox">
-                                <input type="checkbox" name="calendarId" value="${cal.key}" checked="checked" /> ${cal.value}
-                            </label>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="calendarId" value="${cal.key}" checked="checked" /> ${cal.value}
+                                </label>
+                            </div>
+
                         </c:when>
                         <c:otherwise>
-                            <label class="checkbox">
-                                <input type="checkbox" name="calendarId" value="${cal.key}" /> ${cal.value}
-                            </label>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="calendarId" value="${cal.key}" /> ${cal.value}
+                                </label>
+                            </div>
+
                         </c:otherwise>
                     </c:choose>
 
